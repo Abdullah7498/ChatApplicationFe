@@ -33,7 +33,7 @@ const SignUp = () => {
         },
       });
       if (response.data.message) {
-        message.success(response.message);
+        message.success(response.data?.message);
       } else {
         message.error(response.data.error);
       }
