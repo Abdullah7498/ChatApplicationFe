@@ -9,7 +9,7 @@ function AppRoutes() {
   return (
     <MainLayout>
       <Routes>
-        <Route path="/" element={<USERS />} />
+        <Route index path="/" element={<USERS />} />
       </Routes>
     </MainLayout>
   );

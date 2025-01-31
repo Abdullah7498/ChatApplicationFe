@@ -12,7 +12,9 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    await dispatch(LoginApi(values));
+    await dispatch(LoginApi(values)).then(() => {
+      navigate("/");
+    });
   };
   return (
     <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-lg border border-gray-200">
