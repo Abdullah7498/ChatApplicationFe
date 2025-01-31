@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { GoogleOutlined } from "@ant-design/icons";
 import axios from "axios";
+import axiosApi from "../../api/config";
 const SignUp = () => {
   const [form] = Form.useForm();
   const [profileImage, setProfileImage] = useState(null);
@@ -26,7 +27,7 @@ const SignUp = () => {
     FormDataValues.append("password", values.password);
 
     try {
-      const response = await axios.post(
+      const response = await axiosApi.post(
         "http://localhost:8000/api/v1/auth/signup",
         FormDataValues,
         {
