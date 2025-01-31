@@ -27,15 +27,11 @@ const SignUp = () => {
     FormDataValues.append("password", values.password);
 
     try {
-      const response = await axiosApi.post(
-        "http://localhost:8000/api/v1/auth/signup",
-        FormDataValues,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axiosApi.post(FormDataValues, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (response.data.message) {
         message.success(response.message);
       } else {
