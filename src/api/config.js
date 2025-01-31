@@ -1,8 +1,8 @@
 import axios from "axios";
 import { store } from "../store/store";
 
-// export const API_URL = "https://minglechat-production.up.railway.app/";
-export const API_URL = "http://localhost:8000/";
+export const API_URL = "https://minglechat-production.up.railway.app/";
+// export const API_URL = "http://localhost:8000/";
 
 const getToken = () => store.getState().auth?.token || "";
 
