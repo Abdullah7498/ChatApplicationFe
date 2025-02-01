@@ -1,6 +1,8 @@
 import { message } from "antd";
 import { axiosMultipart, axiosSimple } from "../../api/config";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import persistStore from "redux-persist/lib/persistStore";
+import { persistor } from "../store";
 
 export const SignUpApi = createAsyncThunk("SignUpApi", async (data) => {
   try {

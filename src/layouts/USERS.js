@@ -1,73 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Avatar, Button, FloatButton } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
+import AddContactModal from "../pages/Chat/AddContactModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getConversationById,
+  getConversationMessagesById,
+  getUerContacts,
+  startConversation,
+} from "../store/slices/ChatSlice";
+import { IMAGE_API_URL } from "../api/config";
 
 function USERS() {
-  const chats = [
-    {
-      id: 1,
-      name: "John Doe",
-      lastMessage: "Hey, how are you?",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "10:30 AM",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      lastMessage: "See you tomorrow!",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "Yesterday",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      lastMessage: "Sent you the document.",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "2 days ago",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      lastMessage: "Hey, how are you?",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "10:30 AM",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      lastMessage: "See you tomorrow!",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "Yesterday",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      lastMessage: "Sent you the document.",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "2 days ago",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      lastMessage: "Hey, how are you?",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "10:30 AM",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      lastMessage: "See you tomorrow!",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "Yesterday",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      lastMessage: "Sent you the document.",
-      profilePic: "https://via.placeholder.com/40",
-      timestamp: "2 days ago",
-    },
-  ];
+  const [openModel, setOpenModal] = useState(false);
+  const { userContacts, chat, conversations } = useSelector(
+    (state) => state.chat
+  );
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  console.log(chat, conversations);
+
+  useEffect(() => {
+    dispatch(getUerContacts(user?._id));
+  }, []);
 
   return (
     <div className="w-80 h-screen bg-gray-50 border-r border-gray-200  flex flex-col">
@@ -79,37 +34,50 @@ function USERS() {
         <Input
           placeholder="Search chats..."
           prefix={<SearchOutlined className="text-gray-400" />}
-          className="w-full rounded-lg"
+          className="w-full bg-gray-100 border border-gray-300 rounded-lg h-8 placeholder:text-gray-500 hover:border-primary focus:border-primary focus:shadow-primary/20"
         />
       </div>
 
       <div className="flex-1  overflow-y-auto">
-        {chats.map((chat) => (
-          <div
-            key={chat.id}
-            className="flex items-center p-4 hover:bg-gray-100 border-b cursor-pointer"
-          >
-            <Avatar src={chat.profilePic} size="large" />
+        {userContacts ? (
+          userContacts?.map((chat, index) => (
+            <div
+              onClick={() => {
+                dispatch(startConversation([chat, user])).then((response) => {
+                  dispatch(getConversationById(response?.payload?._id)).then(
+                    (response) => {
+                      dispatch(
+                        getConversationMessagesById(response?.payload?._id)
+                      );
+                    }
+                  );
+                });
+              }}
+              key={index}
+              className="flex items-center p-4 hover:bg-gray-100 border-b cursor-pointer"
+            >
+              <Avatar src={IMAGE_API_URL + chat.avatar} size="large" />
 
-            <div className="ml-4 flex-1">
-              <h2 className="font-semibold text-gray-800">{chat.name}</h2>
-              <p className="text-sm text-gray-600 truncate">
-                {chat.lastMessage}
-              </p>
+              <div className="ml-4 flex-1">
+                <h2 className="font-semibold text-gray-800">
+                  {user?.email === chat?.email ? "me" : chat.name}
+                </h2>
+              </div>
             </div>
-
-            <p className="text-xs text-gray-500">{chat.timestamp}</p>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="text-center p-4">No contacts found</div>
+        )}
       </div>
-
+      {/* 
       <FloatButton
         icon={<PlusOutlined />}
         type="primary"
         className="bg-green-500 hover:bg-green-600"
-        style={{ bottom: 24, right: 24 }}
-        onClick={() => console.log("New chat clicked")}
-      />
+        style={{ bottom: 17, right: 24 }}
+        onClick={() => setOpenModal(!openModel)}
+      /> */}
+      <AddContactModal showModal={openModel} setOpenModal={setOpenModal} />
     </div>
   );
 }
