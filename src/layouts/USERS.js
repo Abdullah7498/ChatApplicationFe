@@ -30,11 +30,17 @@ function USERS() {
         <h1 className="text-white text-xl font-bold">Mingle</h1>
       </div>
 
-      <div className="p-4 bg-white border-b border-gray-200">
+      <div className="p-4 bg-white border-b flex justify-center items-center gap-2 border-gray-200">
         <Input
           placeholder="Search chats..."
           prefix={<SearchOutlined className="text-gray-400" />}
           className="w-full bg-gray-100 border border-gray-300 rounded-lg h-8 placeholder:text-gray-500 hover:border-primary focus:border-primary focus:shadow-primary/20"
+        />
+        <Button
+          icon={<PlusOutlined />}
+          type="primary"
+          className="bg-primary-500 hover:bg-primary-600 rounded-full"
+          onClick={() => setOpenModal(!openModel)}
         />
       </div>
 
@@ -69,14 +75,7 @@ function USERS() {
           <div className="text-center p-4">No contacts found</div>
         )}
       </div>
-      {/* 
-      <FloatButton
-        icon={<PlusOutlined />}
-        type="primary"
-        className="bg-green-500 hover:bg-green-600"
-        style={{ bottom: 17, right: 24 }}
-        onClick={() => setOpenModal(!openModel)}
-      /> */}
+
       <AddContactModal showModal={openModel} setOpenModal={setOpenModal} />
     </div>
   );
