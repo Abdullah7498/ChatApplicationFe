@@ -7,7 +7,7 @@ function AppRoutes() {
   return (
     <MainLayout>
       <Routes>
-        <Route index path="/" element={<USERS />} />
+        <Route index path="/chats" element={<USERS />} />
       </Routes>
     </MainLayout>
   );

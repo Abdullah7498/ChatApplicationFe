@@ -13,7 +13,7 @@ function Login() {
   const dispatch = useDispatch();
   const onFinish = async (values) => {
     await dispatch(LoginApi(values)).then(() => {
-      navigate("/");
+      navigate("/chats");
     });
   };
   return (
